@@ -5,7 +5,7 @@ $(function() {
 
         $('#post-comment').show();
     });
-    
+
     $('#btn-like').on('click', function(event) {
         event.preventDefault();
 
@@ -13,6 +13,8 @@ $(function() {
 
         $.post('/images/' + imgId + '/like').done(function(data) {
             $('.likes-count').text(data.likes);
+
+						toastr.info("You liked this post", { timeout: 3000 });
         });
     });
 
@@ -31,6 +33,9 @@ $(function() {
                     $this.removeClass('btn-danger').addClass('btn-success');
                     $this.find('i').removeClass('fa-times').addClass('fa-check');
                     $this.append('<span> Deleted!</span>');
+
+										toastr.error("Deleted!");
+										window.location.href = "/";
                 }
             });
         }
