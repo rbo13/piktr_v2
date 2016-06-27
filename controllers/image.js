@@ -1,8 +1,12 @@
 var fs = require('fs'),
     path = require('path'),
     sidebar = require('../helpers/sidebar'),
+    url = require('../helpers/url'),
     Models = require('../models'),
     md5 = require('MD5');
+
+
+
 module.exports = {
     index: function(req, res) {
         var viewModel = {
@@ -39,12 +43,31 @@ module.exports = {
     create: function(req, res) {
         // res.send('The image:create POST controller');
         var saveImage = function() {
-            var possible = 'abcdefghijklmnopqrstuvwxyz0123456789',
-                imgUrl = '';
-            for(var i=0; i < 6; i+=1) {
-                imgUrl += possible.charAt(Math.floor(Math.random() * possible.length));
-            }
-            // search for an image with the same filename by performing a find:
+
+            /**
+             * This block of code handles the randomizing of url
+             * from: /helpers/url.js
+             */
+            var firstAdjective = url.capitalizeFirstLetter(url.firstAdjective[Math.floor(Math.random() * url.firstAdjective.length)]);
+            var secondAdjective = url.capitalizeFirstLetter(url.secondAdjective[Math.floor(Math.random() * url.firstAdjective.length)]);
+            var animal = url.capitalizeFirstLetter(url.animals[Math.floor(Math.random() * url.firstAdjective.length)]);
+
+            /**
+             * Hold the value of the generated URL
+             * then remove all trailing spaces.
+             */
+            var tempUrl = firstAdjective+secondAdjective+animal;
+            var cleanUrl = tempUrl.replace(/ /g, '');
+
+            /**
+             * @description: final URL link:
+             * {URL}/images/UpbeatSquareBrontosaurus
+             */
+
+            var imgUrl = cleanUrl;
+
+
+            //search for an image with the same filename by performing a find:
             Models.Image.find({filename: imgUrl}, function(err, image) {
                 // if a matching image was found, try again (start over):
                 if(image.length > 0) {
@@ -69,8 +92,8 @@ module.exports = {
                             newImg.save(function(err, image) {
                                 console.log('Successfully inserted Image: ' + image.filename);
                                 res.redirect('/images/'+ image.uniqueId);
-                            })
-                            
+                            });
+
                         });
                     } else {
                         fs.unlink(tempPath, function () {
@@ -105,20 +128,20 @@ module.exports = {
                 newComment.gravatar = md5(newComment.email);
                 newComment.image_id = image._id;
                 newComment.save(function(err, comment) {
-                    if(err) { throw err }
+                    if(err) { throw err; }
 
                     res.redirect('/images/' + image.uniqueId + '#' + comment._id);
                 });
             } else {
                 res.redirect('/');
             }
-        })
+        });
     },
     remove: function(req, res) {
         Models.Image.findOne({ filename: { $regex: req.params.image_id }}, function(err, image) {
             if(err) {
-               throw err; 
-            } 
+               throw err;
+            }
             fs.unlink(path.resolve('./public/upload/' + image.filename), function(err) {
                 if(err) { throw err; }
 
@@ -128,8 +151,8 @@ module.exports = {
                             res.json(true);
                         } else {
                             res.json(false);
-                        } 
-                    });   
+                        }
+                    });
                 });
             });
         });

@@ -5,6 +5,7 @@ var express = require('express'),
 	path = require('path'),
 	multer = require('multer'),
 	upload = multer({ dest: path.join(__dirname, 'public/upload/temp')});
+	
 module.exports = function(app) {
 	router.get('/',home.index);
 	router.get('/images/:image_id', image.index);
