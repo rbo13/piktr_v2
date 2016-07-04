@@ -123,7 +123,7 @@ module.exports = {
                 newComment.save(function(err, comment) {
                     if(err) { throw err; }
 
-                    res.redirect('/images/' + image.uniqueId + '#' + comment._id);
+                    res.redirect('/gallery/' + image.uniqueId + '#' + comment._id);
                 });
             } else {
                 res.redirect('/');
