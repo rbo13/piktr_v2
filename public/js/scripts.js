@@ -31,7 +31,7 @@ $(function() {
         $.post('/images/' + imgId + '/like').done(function(data) {
             $('.likes-count').text(data.likes);
 
-						toastr.info("You liked this post", { timeout: 3000 });
+						toastr.success("You liked this post", { timeout: 3000 });
         });
     });
 
@@ -51,8 +51,8 @@ $(function() {
                     $this.find('i').removeClass('fa-times').addClass('fa-check');
                     $this.append('<span> Deleted!</span>');
 
-										toastr.error("Deleted!");
 										window.location.href = "/";
+										toastr.info("Deleted!");
                 }
             });
         }
