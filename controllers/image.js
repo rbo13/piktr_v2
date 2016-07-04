@@ -54,7 +54,7 @@ module.exports = {
 
             /**
              * @description: final URL link:
-             * {URL}/images/UpbeatSquareBrontosaurus
+             * {URL}/gallery/UpbeatSquareBrontosaurus
              */
 
             var imgUrl = ((firstAdjective+secondAdjective+animal).replace(/ /g, ''));
@@ -65,6 +65,7 @@ module.exports = {
                 if(image.length > 0) {
                     saveImage();
                 } else {
+
                     // var tempPath = req.files.file.path,
                     var tempPath = req.file.path,
                         // ext = path.extname(req.files.file.name).toLowerCase(),
