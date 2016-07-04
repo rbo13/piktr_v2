@@ -53,19 +53,11 @@ module.exports = {
             var animal = url.capitalizeFirstLetter(url.animals[Math.floor(Math.random() * url.firstAdjective.length)]);
 
             /**
-             * Hold the value of the generated URL
-             * then remove all trailing spaces.
-             */
-            var tempUrl = firstAdjective+secondAdjective+animal;
-            var cleanUrl = tempUrl.replace(/ /g, '');
-
-            /**
              * @description: final URL link:
              * {URL}/images/UpbeatSquareBrontosaurus
              */
 
-            var imgUrl = cleanUrl;
-
+            var imgUrl = ((firstAdjective+secondAdjective+animal).replace(/ /g, ''));
 
             //search for an image with the same filename by performing a find:
             Models.Image.find({filename: imgUrl}, function(err, image) {
@@ -91,7 +83,7 @@ module.exports = {
                             // and save the new Image
                             newImg.save(function(err, image) {
                                 console.log('Successfully inserted Image: ' + image.filename);
-                                res.redirect('/images/'+ image.uniqueId);
+                                res.redirect('/gallery/'+ image.uniqueId);
                             });
 
                         });
